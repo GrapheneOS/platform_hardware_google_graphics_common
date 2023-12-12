@@ -519,10 +519,12 @@ void HistogramDevice::getHistogramData(uint8_t channelId, std::vector<char16_t> 
     if ((ret = moduleDisplayInterface->sendHistogramChannelIoctl(HistogramChannelIoctl_t::REQUEST,
                                                                  channelId)) != NO_ERROR) {
         *histogramErrorCode = HistogramErrorCode::BAD_HIST_DATA;
-        ALOGE("%s: histogram channel #%u: BAD_HIST_DATA, sendHistogramChannelIoctl (REQUEST) "
-              "error "
-              "(%d)",
-              __func__, channelId, ret);
+        if (ret != INVALID_OPERATION) {
+            ALOGE("%s: histogram channel #%u: BAD_HIST_DATA, sendHistogramChannelIoctl (REQUEST) "
+                  "error "
+                  "(%d)",
+                  __func__, channelId, ret);
+        }
         return;
     }
     channel.histDataCollecting = true;
