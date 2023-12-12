@@ -2867,9 +2867,15 @@ int32_t ExynosDisplayDrmInterface::clearDisplayHistogramChannelSetting(
     return ret;
 }
 
+static bool logged_mutli_ch_histogram_error = false;
+
 int32_t ExynosDisplayDrmInterface::sendHistogramChannelIoctl(HistogramChannelIoctl_t control,
                                                              uint8_t channelId) const {
-    ALOGE("%s: kernel doesn't support multi channel histogram ioctl", __func__);
+    if (!logged_mutli_ch_histogram_error) {
+        logged_mutli_ch_histogram_error = true;
+        ALOGE("%s: kernel doesn't support multi channel histogram ioctl", __func__);
+    }
+
     return INVALID_OPERATION;
 }
 
